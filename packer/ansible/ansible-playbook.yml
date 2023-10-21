@@ -1,0 +1,15 @@
+- hosts: all
+  user: root
+  roles:
+    - dev-sec.os-hardening
+    - dev-sec.ssh-hardening
+  vars:
+    sysctl_overwrite:
+      net.ipv6.conf.all.disable_ipv6: 0
+    ufw_manage_defaults: false # we're managing the default ufw in scripts/10-firewall.sh
+    os_filesystem_whitelist: "vfat" # the EFI partition is formatted with this filesystem
+    # Digital Ocean doesn't disable the option, regardless of whether the 
+    # image supports it, so we must enable it.
+    # see: https://caddy.community/t/cannot-sign-in-to-digitalocean-droplet/6963
+    ssh_permit_root_login: "yes"
+    ssh_max_auth_retries: 100
